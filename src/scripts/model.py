@@ -58,7 +58,7 @@ def train_model(X_train, X_test, y_train, y_test, model):
     model.fit(
         X_train, 
         y_train,
-        epochs=100, 
+        epochs=10, 
         batch_size=10, 
         validation_data=(X_test, y_test)
     )
