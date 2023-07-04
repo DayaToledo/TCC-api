@@ -1,34 +1,40 @@
-import numpy as np
-import os
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.svm import SVC
+
 import pickle
+import sys
 
 from pre_processor import pre_process
+from split_dataset import get_data
+from metrics import get_metrics
 
-np_array_path = os.path.abspath("src/data/np_arrays/")
+algorithms_functions = {
+    'LogisticRegression': LogisticRegression,
+    'KNeighborsClassifier': KNeighborsClassifier,
+    'GaussianNB': GaussianNB,
+    'DecisionTreeClassifier': DecisionTreeClassifier,
+    'AdaBoostClassifier': AdaBoostClassifier,
+    'SVC': SVC
+}
 
-if not (
-    os.path.exists(f"{np_array_path}/X.npy")
-    and os.path.exists(f"{np_array_path}/y.npy")
-):
-    X, y = pre_process()
-    X = np.array(X)
-    y = np.array(y)
-    np.save(f"src/data/np_arrays/X.npy", X)
-    np.save(f"src/data/np_arrays/y.npy", y)
+algorithm = sys.argv[1]
+print()
+print(f"Train model with {algorithm} algorithm!")
 
-X = np.load(f"src/data/np_arrays/X.npy", allow_pickle=True)
-y = np.load(f"src/data/np_arrays/y.npy", allow_pickle=True)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 1)
+random_state = 42
+X_train, X_test, y_train, y_test = get_data(random_state, pre_process)
 
-model = LogisticRegression(multi_class='multinomial', solver='newton-cg', max_iter=100)
+model = algorithms_functions[algorithm]()
 model.fit(X_train, y_train)
 
 predict = model.predict(X_test)
-accuracy = accuracy_score(y_test, predict) * 100
-print ("The accuracy was {:.2f}%.".format(accuracy))
 
-pickle.dump(model, open("src/data/models/model.pkl", 'wb'))
-print("Model sucessfully trained and saved!")
+pickle.dump(model, open(f"src/data/models/model_{algorithm}.pkl", 'wb'))
+print()
+print("Model successfully trained and saved!")
+
+get_metrics(y_test, predict, random_state, algorithm)
