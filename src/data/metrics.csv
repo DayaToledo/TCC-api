@@ -1,0 +1,9 @@
+,Algoritmo,Acurácia,Precisão,F1
+0,,,,
+0,LogisticRegression,34.31,31.76,25.70
+0,KNeighborsClassifier,30.39,30.63,30.00
+0,GaussianNB,32.35,31.28,22.91
+0,DecisionTreeClassifier,41.67,40.35,40.51
+0,AdaBoostClassifier,32.84,32.89,26.27
+0,SVC,34.31,43.65,25.93
+0,LogisticRegression_specific,66.15,65.93,65.76

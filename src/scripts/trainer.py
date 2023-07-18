@@ -9,8 +9,8 @@ import pickle
 import sys
 
 from pre_processor import pre_process
-from split_dataset import get_data
-from metrics import get_metrics
+from splitter import split_data
+from tester import get_metrics
 
 algorithms_functions = {
     'LogisticRegression': LogisticRegression,
@@ -23,10 +23,10 @@ algorithms_functions = {
 
 algorithm = sys.argv[1]
 print()
-print(f"Train model with {algorithm} algorithm!")
+print(f"Treinando modelo com algoritmo {algorithm}!")
 
 random_state = 42
-X_train, X_test, y_train, y_test = get_data(random_state, pre_process)
+X_train, X_test, y_train, y_test = split_data(random_state, pre_process)
 
 model = algorithms_functions[algorithm]()
 model.fit(X_train, y_train)
@@ -35,6 +35,6 @@ predict = model.predict(X_test)
 
 pickle.dump(model, open(f"src/data/models/model_{algorithm}.pkl", 'wb'))
 print()
-print("Model successfully trained and saved!")
+print("Modelo treinado com sucesso e salvo!")
 
 get_metrics(y_test, predict, random_state, algorithm)

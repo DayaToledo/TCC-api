@@ -21,7 +21,7 @@ def get_analyze_personality(questions: schemas.Questions):
         df = df.T
         test_data = get_x(df)
         # print(test_data)
-        model = pickle.load(open('src/data/models/model_LogisticRegression_responsible.pkl', 'rb'))
+        model = pickle.load(open('src/data/models/model_LogisticRegression_specific.pkl', 'rb'))
         prediction = model.predict(test_data)[0]
         # print(prediction)
         return { "Prediction": prediction }

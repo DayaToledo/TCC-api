@@ -1,33 +1,31 @@
-# Importando bibliotecas
 import numpy as np
 import pandas as pd
 import os
 pd.options.display.max_columns = 150
 
-def pre_process_responsible():
+def pre_process_specific():
     # Lendo e juntando os CSVs com os dados
     samples_path = os.path.abspath("src/data/samples/")
-    data_set = pd.read_csv(f"{samples_path}/data.csv", sep=',')
+    data_set = pd.read_csv(f"{samples_path}/dataset1.csv", sep=',')
 
-    # Removendo valores ausentes
+    # Analisando e removendo valores ausentes
     print("Conjunto de dados: ", data_set.shape)
     print("Número de participantes: ", len(data_set))
     print("Existem valores ausentes? ", data_set.isnull().values.any())
     print("Quantos valores faltantes? ", data_set.isnull().values.sum())
-    data_set.dropna(inplace=True)
-    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
+    data_set.dropna(inplace=True)
     start_rows = len(data_set)
     data_set = data_set.replace(0, np.nan).dropna(axis=0).reset_index(drop=True)
     remove_rows = start_rows - len(data_set)
 
-    # data_set = data_set.sample() 
+    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
     # Definindo e ordenando as colunas
     personality_traits = ["EXT", "AGR", "CSN", "EST", "OPN"]
     personality_result = 'personality'
 
-    # select = (data_set['home_team'] == 'Brazil') | (dataset_sem_friendly['away_team'] == 'Brazil')
+    # Filtrando somente as linhas que a personalidade seja 'responsible' ou 'dependable'
     data_set = data_set.query("personality == 'responsible' or personality =='dependable'")
 
     y = data_set[personality_result]
@@ -38,23 +36,22 @@ def pre_process_responsible():
     return X, y
 
 def pre_process():
-    # Lendo e juntando os CSVs com os dados
+    # Analisando e removendo valores ausentes
     samples_path = os.path.abspath("src/data/samples/")
-    data_set = pd.read_csv(f"{samples_path}/data.csv", sep=',')
+    data_set = pd.read_csv(f"{samples_path}/dataset1.csv", sep=',')
 
     # Removendo valores ausentes
     print("Conjunto de dados: ", data_set.shape)
     print("Número de participantes: ", len(data_set))
     print("Existem valores ausentes? ", data_set.isnull().values.any())
     print("Quantos valores faltantes? ", data_set.isnull().values.sum())
-    data_set.dropna(inplace=True)
-    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
+    data_set.dropna(inplace=True)
     start_rows = len(data_set)
     data_set = data_set.replace(0, np.nan).dropna(axis=0).reset_index(drop=True)
     remove_rows = start_rows - len(data_set)
 
-    # data_set = data_set.sample() 
+    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
     # Definindo e ordenando as colunas
     personality_traits = ["EXT", "AGR", "CSN", "EST", "OPN"]
@@ -73,12 +70,13 @@ def get_x(data_set):
     print("Número de participantes: ", len(data_set))
     print("Existem valores ausentes? ", data_set.isnull().values.any())
     print("Quantos valores faltantes? ", data_set.isnull().values.sum())
-    data_set.dropna(inplace=True)
-    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
+    data_set.dropna(inplace=True)
     start_rows = len(data_set)
     data_set = data_set.replace(0, np.nan).dropna(axis=0).reset_index(drop=True)
     remove_rows = start_rows - len(data_set)
+    
+    print("Número de participantes após excluir linhas com valores ausentes: ", len(data_set))
 
     # Define os labels positivos
     positively_keyed = [
