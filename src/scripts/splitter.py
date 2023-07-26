@@ -5,8 +5,8 @@ from sklearn.model_selection import train_test_split
 
 np_array_path = os.path.abspath("src/data/np_arrays/")
 
-def split_data(random_state, pre_process, algorithm='other'):
-    if algorithm == 'specific':
+def split_data(random_state, pre_process, specific=False):
+    if specific:
         np_array_X = f"{np_array_path}/X_specific.npy"
         np_array_y = f"{np_array_path}/y_specific.npy"
     else: 
@@ -17,7 +17,7 @@ def split_data(random_state, pre_process, algorithm='other'):
         os.path.exists(np_array_X)
         and os.path.exists(np_array_y)
     ):
-        X, y = pre_process()
+        X, y = pre_process(specific)
         X = np.array(X)
         y = np.array(y)
         np.save(np_array_X, X)

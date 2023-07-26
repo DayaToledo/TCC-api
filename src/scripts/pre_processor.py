@@ -35,7 +35,7 @@ def pre_process_specific():
     # print(y)
     return X, y
 
-def pre_process():
+def pre_process_all():
     # Analisando e removendo valores ausentes
     samples_path = os.path.abspath("src/data/samples/")
     data_set = pd.read_csv(f"{samples_path}/dataset1.csv", sep=',')
@@ -63,6 +63,12 @@ def pre_process():
     # print(X)
     # print(y)
     return X, y
+
+
+def pre_process(specific = False):
+    if specific: 
+        return pre_process_specific()    
+    return pre_process_all()
 
 def get_x(data_set):
     # Removendo valores ausentes
